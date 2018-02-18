@@ -6,5 +6,3 @@ Into the file WifiName.txt you can see the password of every saved wifi availabl
 
 ![](https://i.imgur.com/wxT1Uj2.png)
 
-
-:warning: WORKS ONLY ON FRENCH COMPUTER (you can fork it for english computer if you want ^^) :warning:
