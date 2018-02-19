@@ -26,7 +26,7 @@ strText=Split(GetOutput("netsh wlan show profile"), "\n")
 i = 0
 
 For Each x in strText 
-	If i > 8 And i < 18 Then
+	If i > 8 And i < Ubound(strText)-1 Then
 		Name = Split(x, ": ")(1)
 		str=Split(GetOutput("netsh wlan show profile """ & Name & """ key=clear"), "\n")(32)
 		passwd = Split(str, ": ")
