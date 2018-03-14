@@ -15,6 +15,7 @@ Function GetOutput(command)
 End Function
 
 Function saveIt(wifi, passwd)
+  wifi = Replace(Replace(wifi, ">", "-"), "<", "-")
   Set objFSO=CreateObject("Scripting.FileSystemObject")
   Set objFile=objFSO.CreateTextFile(wifi & ".txt")
   objFile.Write(passwd)
