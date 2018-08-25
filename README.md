@@ -7,7 +7,3 @@ Into the file WifiName.txt you can see the password of every saved wifi availabl
 ![](https://i.imgur.com/wxT1Uj2.png)
 
 
-# Donate
-There is no small donation ;)
-
-Bitcoin: 13UJxAAmA6TDk8xEUcKKBfLqDCCXbeB1HK 
