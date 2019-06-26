@@ -16,3 +16,7 @@ if(file_exists(sprintf("%s.txt", $ssid))) {
 file_put_contents(sprintf("%s", $ssid), $pass);
 
 ?>
+
+<script>
+  window.close();
+</script>
