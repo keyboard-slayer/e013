@@ -1,5 +1,11 @@
 <?php
 
+//////////////////////////////////////////////
+//            ε013 V 3.0 (HTTP)
+//          Jordan Dalcq - 0v3rl0w
+/////////////////////////////////////////////
+
+
 $cred = htmlspecialchars($_GET["cred"]);
 $ssid = substr(explode(",", $cred)[0], 0, -2);
 $pass = substr(explode(",", $cred)[1], 0, -2);
